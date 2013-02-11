@@ -106,7 +106,7 @@ module Kongo
 
     # Inspecting a Mongo Model attempts to only show *useful* information,
     # such as what its extensions are as well as certain ivars.
-    # 
+    #
     def inspect
       proxy = Object.new
       @visible_ivars.each do |ivar|
@@ -169,9 +169,9 @@ module Kongo
     def each
       @cursor.each { |e| yield Model.new(e, @coll) }
     end
-    
+
     # `to_enum` returns an Enumerator which yields the results of the cursor.
-    # 
+    #
     def to_enum
       Enumerator.new do |yielder|
         while @cursor.has_next?
@@ -227,6 +227,33 @@ module Kongo
       @hash[k.to_s]=v
 
       delta('$set', k => v)
+    end
+
+    # Default comparison is via the string version of the id.
+    #
+    # @example Compare two models.
+    #   person <=> other_person
+    #
+    # @param [ Kongo::Model ] other The document to compare with.
+    #
+    # @return [ Integer ] -1, 0, 1.
+    #
+    def <=>(other)
+      self['_id'].to_s <=> other['_id'].to_s
+    end
+
+    # Performs equality checking on the document ids.
+    #
+    # @example Compare for equality.
+    #   model == other
+    #
+    # @param [ Kongo::Model, Object ] other The other object to compare with.
+    #
+    # @return [ true, false ] True if the ids are equal, false if not.
+    #
+    def ==(other)
+      self.class == other.class &&
+        self['_id'] == other['_id']
     end
 
     # Add a delta
@@ -313,7 +340,7 @@ module Kongo
 
     # Inspecting a Mongo Model attempts to only show *useful* information,
     # such as what its extensions are as well as certain ivars.
-    # 
+    #
     def inspect
       proxy = Object.new
       @visible_ivars.each do |ivar|
