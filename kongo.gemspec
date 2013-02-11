@@ -9,6 +9,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ['Kenneth Ballenegger']
   gem.email         = ['kenneth@ballenegger.com']
   gem.description   = %q{Kongo is a lightweight and generic library for accessing data from Mongo.}
+  gem.summary       = %q{Kongo is a lightweight and generic library for accessing data from Mongo.}
   gem.homepage      = 'https://github.com/kballenegger/Kongo'
 
   gem.files         = `git ls-files`.split($/)
