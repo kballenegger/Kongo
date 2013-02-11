@@ -2,7 +2,7 @@
 
 Kongo is a lightweight and generic library for accessing data from Mongo.
 
-# Rationale
+## Rationale
 
 Kongo is not your typical ORM. Traditionally, according to MVC architecture best practices, you would create a model class to represent data from each collection in your application. However, while it is a good abstraction early on, as an application grows and scales, it is not uncommon to see models grow to thousands of lines of code, grouping together many different pieces of unrelated business logic. Not only that, but dependencies and tight coupling arises between the various related models.
 
