@@ -169,6 +169,16 @@ module Kongo
     def each
       @cursor.each { |e| yield Model.new(e, @coll) }
     end
+    
+    # `to_enum` returns an Enumerator which yields the results of the cursor.
+    # 
+    def to_enum
+      Enumerator.new do |yielder|
+        while @cursor.has_next?
+          yielder.yield(self.next)
+        end
+      end
+    end
 
     # `to_a` returns an array of Kongo::Model.
     #
