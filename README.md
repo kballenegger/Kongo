@@ -81,7 +81,7 @@ class User < Model
     Account::find_by_id(self['earnings_account'])
   end
   def spend
-    Account::find_by_id(sefl['spend_account'])
+    Account::find_by_id(self['spend_account'])
   end
 end
 ```
@@ -125,7 +125,8 @@ Instead, if we have the possibility of abstracting this into a library, we might
 module Finance
 
   # other finance functionality that does not belong directly to a
-  # model, eg something like inance::convert_currency
+  # model, eg. something like `Finance::convert_currency`
+
   # our finance extensions to the models:
 
   module Extensions
@@ -134,7 +135,7 @@ module Finance
         Account::find_by_id(self['earnings_account'])
       end
       def spend
-        Account::find_by_id(sefl['spend_account'])
+        Account::find_by_id(self['spend_account'])
       end
     end
     Kongo::Model.add_extension(:users, User)
