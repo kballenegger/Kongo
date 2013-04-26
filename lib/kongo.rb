@@ -34,7 +34,7 @@ module Kongo
     # Otherwise finds by value.
     #
     def find_by_id(id)
-      id = BSON::ObjectId(id) if id.is?(String) && BSON::ObjectId.legal?(id)
+      id = BSON::ObjectId(id) if id.is_a?(String) && BSON::ObjectId.legal?(id)
       find_one(_id: id)
     end
 
