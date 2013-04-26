@@ -63,6 +63,7 @@ module Kongo
     #
     def insert!(hash)
       coll.insert(hash)
+      hash['_id'] = hash.delete(:_id) if hash[:_id]
       Model.new(hash, coll)
     end
 
