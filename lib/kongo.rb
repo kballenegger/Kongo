@@ -309,7 +309,7 @@ module Kongo
     # saved after an update has been issued.
     #
     def update!(deltas = {})
-      return if @deltas.empty?
+      return if @deltas.empty? && deltas.empty?
 
       id = @hash['_id']
       raise unless id # TODO: custom exception
