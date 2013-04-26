@@ -34,7 +34,7 @@ module Kongo
     # Otherwise finds by value.
     #
     def find_by_id(id)
-      id = BSON::ObjectId(id) if BSON::ObjectId.legal?(id)
+      id = BSON::ObjectId(id) if id.is?(String) && BSON::ObjectId.legal?(id)
       find_one(_id: id)
     end
 
@@ -103,9 +103,10 @@ module Kongo
     def coll
       return @coll if @coll
 
-      raise 'Kongo has not been initialized with a collection fetcher.' unless @@collection_fetcher
-      @coll = @@collection_fetcher.call(@coll_name)
-      @coll
+      @coll ||= begin
+        raise 'Kongo has not been initialized with a collection fetcher.' unless @@collection_fetcher
+        @@collection_fetcher.call(@coll_name)
+      end
     end
 
 
@@ -307,7 +308,7 @@ module Kongo
     def save!(options = {})
       warn("#{Kernel.caller.first}: `save` is deprecated, use `update` instead.")
       raise if @stale unless options[:ignore_stale] # TODO: custom exception
-      @coll.save(@hash, :safe => true)
+      @coll.save(@hash, :w => 1)
     end
 
     # Issues an update on the database, for this record, with the provided
@@ -327,7 +328,7 @@ module Kongo
 
       @stale = true
 
-      @coll.update({_id: id}, deltas, :safe => true)
+      @coll.update({_id: id}, deltas, :w => 1)
     end
 
     # Deletes this record from the database.
