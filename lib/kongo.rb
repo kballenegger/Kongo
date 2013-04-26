@@ -22,15 +22,21 @@ module Kongo
       end
     end
 
-    # `find_one` and `find_by_id` are the same method. When passed a native
-    # BSON::ObjectId, it will act as a find_by_id, otherwise, expects a regular
-    # query hash. Will return a Kongo::Model.
+    # When passed a native BSON::ObjectId, it will act as a find_by_id,
+    # otherwise, expects a regular query hash. Will return a Kongo::Model.
     #
     def find_one(*args)
       (r = coll.find_one(*args)) ?
         Model.new(r, coll) : r
     end
-    alias :find_by_id :find_one
+
+    # If passed a legal BSON ObjectId string, will convert to BSON::ObjectId.
+    # Otherwise finds by value.
+    #
+    def find_by_id(id)
+      id = BSON::ObjectId(id) if BSON::ObjectId.legal?(id)
+      find_one(_id: id)
+    end
 
     # `find`, aka. `find_many` returns a Kongo::Cursor wrapping the Mongo
     # cursor.
