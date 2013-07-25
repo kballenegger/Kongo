@@ -83,9 +83,7 @@ module Kongo
     #
     #   class MongoCollectionFetcher
     #     def self.fetch(name)
-    #       unless @mongo
-    #         @mongo = Mongo::Connection.new
-    #       end
+    #       @mongo ||= Mongo::Connection.new
     #       return @mongo['database'][name.to_s]
     #     end
     #   end
